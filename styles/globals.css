@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+.swiper {
+  width: 1500px;
+  height: 300px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}
+
+/* news style */
+.news_container {
+  width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+}
+
+.news_item_img {
+  float: left;
+  background-color: #ccc;
+}
+
+.news_item {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
