@@ -13,12 +13,13 @@ export default function NavBar() {
   const [user, setUser] = useState(null);
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCqcF-IovC9aIcFcz3uzSl5a38RFQdrAvk",
-    authDomain: "dims-d867f.firebaseapp.com",
-    projectId: "dims-d867f",
-    storageBucket: "dims-d867f.appspot.com",
-    messagingSenderId: "1098008483419",
-    appId: "1:1098008483419:web:30b29d7be90d102220517e",
+    apiKey: "AIzaSyCvlGQMM9cqSDfZzbbahlOhAcxjhCB3ORo",
+    authDomain: "login-5c258.firebaseapp.com",
+    databaseURL: "https://login-5c258-default-rtdb.firebaseio.com",
+    projectId: "login-5c258",
+    storageBucket: "login-5c258.appspot.com",
+    messagingSenderId: "286389018438",
+    appId: "1:286389018438:web:c04d89abb3940076d1cf47",
   };
 
   const app = initializeApp(firebaseConfig);
