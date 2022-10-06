@@ -83,12 +83,6 @@ export default function Login() {
               className="w-80 h-10 rounded-md border-2 border-gray-300 focus:outline-none focus:border-blue-500"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <p>
-              Belum punya akun?{" "}
-              <a href="./register" className="text-blue-500">
-                Daftar
-              </a>
-            </p>
             <button
               type="submit"
               className="w-80 h-10 rounded-md bg-blue-500 text-white font-bold"
