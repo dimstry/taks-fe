@@ -16,11 +16,11 @@ export default function Corousel() {
       <Swiper
         navigation={true}
         modules={[Navigation]}
-        className="mySwiper my-4"
+        className="mySwiper my-4 mx-auto"
       >
         <SwiperSlide>
           <img
-            className="object-fill w-full h-96 i"
+            className="object-fill w-full h-96"
             src="https://cdn.pixabay.com/photo/2022/03/20/15/40/nature-7081138__340.jpg"
             alt="image slide 1"
           />

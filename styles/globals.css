@@ -52,3 +52,18 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.myNav {
+  width: 100%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* ketika tablet */
+@media only screen and (max-width: 768px) {
+  .mySwiper {
+    width: 100%;
+    height: 300px;
+  }
+}

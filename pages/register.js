@@ -2,13 +2,21 @@ import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getDatabase, set, ref } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const myAlert = (icon, title, text) => {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: text,
+    });
+  };
 
   const firebaseConfig = {
     apiKey: "AIzaSyCqcF-IovC9aIcFcz3uzSl5a38RFQdrAvk",
@@ -25,31 +33,56 @@ export default function Login() {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        set(ref(db, "users/" + user.uid), {
-          email: email,
-          password: password,
+    // cek pasword harus lebih dari 6 karakter ,mengandung hurup kapital , hurup kecil dan angka
+    if (password.length < 6) {
+      myAlert(
+        "error",
+        "Password Salah",
+        "Password harus lebih dari 6 karakter"
+      );
+    } else if (!password.match(/[A-Z]/)) {
+      myAlert(
+        "error",
+        "Password Salah",
+        "Password harus mengandung huruf kapital"
+      );
+    } else if (!password.match(/[a-z]/)) {
+      myAlert(
+        "error",
+        "Password Salah",
+        "Password harus mengandung huruf kecil"
+      );
+    } else if (!password.match(/[0-9]/)) {
+      myAlert("error", "Password Salah", "Password harus mengandung angka");
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          set(ref(db, "users/" + user.uid), {
+            email: email,
+            password: password,
+          });
+
+          localStorage.setItem("user", JSON.stringify(user));
+          myAlert("success", "Register Berhasil", "Selamat Datang");
+          router.push("/dashboard");
+          setEmail("");
+          setPassword("");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          if (errorCode === "auth/weak-password") {
+            myAlert("error", "Password Salah", "Password terlalu lemah");
+          } else if (errorCode === "auth/email-already-in-use") {
+            myAlert("error", "Email Salah", "Email sudah terdaftar");
+          } else {
+            myAlert("error", "Error", errorMessage);
+          }
         });
-        alert("Register Success");
-        router.push("/dashboard");
-        setEmail("");
-        setPassword("");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorCode === "auth/weak-password") {
-          alert("The password is too weak.");
-        } else if (errorCode === "auth/email-already-in-use") {
-          alert("Email already in use");
-        } else {
-          alert(errorMessage);
-        }
-      });
+    }
   };
 
   return (
@@ -75,9 +108,9 @@ export default function Login() {
             />
             <p>
               Sudah punya akun?{" "}
-              <Link href="/" className="text-blue-500">
+              <a href="./" className="text-blue-500">
                 Login
-              </Link>
+              </a>
             </p>
             <button
               type="submit"

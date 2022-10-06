@@ -4,6 +4,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,6 +25,14 @@ export default function Login() {
   const auth = getAuth();
   const db = getDatabase();
 
+  const myAlert = (icon, title, text) => {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: text,
+    });
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
@@ -34,14 +43,21 @@ export default function Login() {
           email: email,
           password: password,
         });
-        // ...
         localStorage.setItem("user", JSON.stringify(user));
         router.push("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage);
+        if (errorCode === "auth/wrong-password") {
+          myAlert(
+            "error",
+            "Password Salah",
+            "Password yang anda masukkan salah"
+          );
+        } else if (errorCode === "auth/user-not-found") {
+          myAlert("error", "Email Salah", "Email yang anda masukkan salah");
+        }
       });
   };
 
@@ -68,9 +84,9 @@ export default function Login() {
             />
             <p>
               Belum punya akun?{" "}
-              <Link href="./register" className="text-blue-500">
+              <a href="./register" className="text-blue-500">
                 Daftar
-              </Link>
+              </a>
             </p>
             <button
               type="submit"

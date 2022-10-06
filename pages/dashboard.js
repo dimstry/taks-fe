@@ -6,18 +6,20 @@ import ContentRight from "./components/ContentRight";
 import NavBar from "./components/NavBar";
 export default function dashboard() {
   return (
-    <div className="h-screen w-screen bg-gray-100">
+    // container responsive
+    <div className="container mx-auto">
       {/* navbar */}
       <NavBar />
       {/* corousel */}
       <Corousel />
       {/* content */}
-      <div className="flex justify-center w-full px-6">
+      {/* ketika table jadi column */}
+      <div className="flex flex-col md:flex-row w-11/12 mx-auto">
         <div className="w-6/12 h-full flex justify-start items-center">
           {/* content kiri */}
           <ContentLeft />
         </div>
-        <div className="w-6/12 h-full flex justify-start items-center">
+        <div className="w-full h-full flex justify-start items-center md:w-6/12">
           {/* content kanan */}
           <ContentRight />
         </div>

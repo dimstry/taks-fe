@@ -6,6 +6,7 @@ import Avatar from "../../public/avatar.svg";
 import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 export default function NavBar() {
   const router = useRouter();
@@ -23,19 +24,34 @@ export default function NavBar() {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // log out firebase
+  // alert confirm logout
+  const myAlert = (display) => {
+    Swal.fire({
+      title: "Yakin?",
+      text: "Kamu yakin ingin logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yess!",
+    }).then((result) => {
+      // jika iya
+      if (result.isConfirmed) {
+        signOut(auth)
+          .then(() => {
+            localStorage.removeItem("user");
+            router.push("/");
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      }
+    });
+  };
+
   const handleLogout = (e) => {
     e.preventDefault();
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        alert("Logout Success");
-        router.push("/");
-      })
-      .catch((error) => {
-        // An error happened.
-        alert(error);
-      });
+    myAlert();
   };
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -43,24 +59,26 @@ export default function NavBar() {
   }, []);
 
   return (
-    <div className="h-20 w-screen bg-gradient-to-r from-sky-500 to-indigo-500 flex justify-center self-center">
-      {/* navbar kiri */}
-      <div className="flex items-center w-11/12">
-        <div className="w-1/4 h-full flex justify-start items-center">
+    <div className="h-20 bg-gradient-to-r from-sky-500 to-indigo-500 flex justify-center self-center">
+      {/* navbar */}
+      <div className="flex items-center w-11/12 ">
+        <div className="w-1/4 h-full  justify-start items-center hidden md:flex">
           <div className="w-3/4 h-3/4 rounded-md flex justify-center items-center">
             {/* navbar home dan projeck */}
-            <Link href="/">
+            <Link href="/dashboard">
               <a className="text-gray-50 font-bold text-xl mr-10">Home</a>
             </Link>
-            <Link href="/project">
-              <a className="text-gray-50 font-bold text-xl">Project</a>
+            <Link href="/dashboard">
+              <a className="text-gray-50 font-bold text-xl hidden md:block">
+                Project
+              </a>
             </Link>
           </div>
         </div>
         {/* navbar kanan */}
-        <div className="w-3/4 h-full flex justify-end items-center">
+        <div className="w-screen h-full flex justify-end items-center md:w-3/4">
           <div className="h-3/4 rounded-md flex justify-center items-center gap-6">
-            {/* img next js user */}
+            {/* img user */}
             <Image src={Avatar} alt="user" width={50} height={50} />
             <p className="font-bold text-gray-50">
               Halo, {user ? user.email : "User"}
